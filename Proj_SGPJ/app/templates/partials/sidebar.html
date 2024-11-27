@@ -1,0 +1,44 @@
+<nav id="sidebar" class="col-auto col-md-3 col-xl-2 bg-light sidebar">
+    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-4 min-vh-100">
+        <button class="nav-link align-middle px-0 toggle-btn" id="toggleButton">
+            <i class="bi bi-list"></i>
+        </button>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link align-middle px-0">
+                    <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline sidebar-text">Home</span>
+                </a>
+            </li>
+            <li>
+                <!-- Atualize este link para a rota 'todos_processos' -->
+                <a href="{{ url_for('todos_processos') }}" class="nav-link px-0 align-middle">
+                    <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline sidebar-text">Processos</span>
+                </a>
+            </li>
+            <!-- <li>
+                <a href="#" class="nav-link px-0 align-middle">
+                    <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline sidebar-text">Products</span>
+                </a>
+            </li> -->
+            <li>
+                <a href="{{ url_for('Agenda') }}" class="nav-link px-0 align-middle">
+                    <i class="bi bi-calendar-date"></i> <span class="ms-1 d-none d-sm-inline sidebar-text">Agenda</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{ url_for('ControleAcesso') }}" class="nav-link px-0 align-middle">
+                    <i class="bi bi-people"></i> <span class="ms-1 d-none d-sm-inline sidebar-text">Users</span>
+                </a>
+            </li>
+            {% if g.logged_in %}
+            <li>
+                <a href="{{ url_for('logout') }}" class="nav-link px-0 align-middle">
+                    <i class="bi bi-box-arrow-right"></i> <span class="ms-1 d-none d-sm-inline sidebar-text">Logout</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+        <hr>
+    </div>
+</nav>

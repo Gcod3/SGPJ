@@ -1,0 +1,105 @@
+
+
+body.menu-expandido .conteudo {
+    margin-left: 300px; /* Ajuste para quando o menu está expandido */
+    width: calc(100% - 300px);
+}
+.conteudo{
+    margin-left: 65px; /* Ajuste com base na largura do menu lateral */
+    padding: 20px;
+    width: calc(100% - 65px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.quadro{
+    width: 80%;
+    height: 80%;
+    padding: 10px;
+    background-color: #3b7fed;
+    border-radius: 10px;
+}
+
+table{
+    background-color: #75a3eb;
+}
+
+table thead tr th{
+    width: 400px;
+    border-collapse: collapse;
+    border: 1px solid #3e83e4;
+}
+
+table tbody tr td{
+    padding: 0px 5px;
+    width: 400px;
+    border-left: 1px solid #3e83e4; /* Borda à esquerda */
+    border-right: 1px solid #3e83e4; /* Borda à direita */
+}
+
+td bi bi-app{
+    display: block; /* Transforma o botão em um bloco para ajustar o alinhamento */
+    margin: 0 auto; /* Centraliza horizontalmente */
+}
+.cabecalho{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.row-buttons{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px;
+}
+
+.row-input{
+    display: flex;
+    justify-content:  flex-start;
+    align-items: center;
+    padding: 5px;
+    width: 200px;
+}
+
+.product-id{
+    margin-right: 200px;
+}
+
+.row-input input{
+    width: 150px;
+    height: 35px;
+    padding: 5px;
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    border: 2px solid #166af1;
+    color: #000;
+    font-size: 13px;
+    border-radius: 5px;
+}
+.row-buttons{
+    width: 200px;
+}
+.row-buttons button{
+    padding: 7px;
+    color: #000;
+    text-decoration: none;
+    font-size: 13px;
+    margin-top: 5px;
+    margin-left: 10px;
+    border: 2px solid #166af1;
+    border-radius: 5px;
+}
+
+.row-buttons button:hover{
+    background-color: #166af1;
+}
+
+.titulo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 360px;
+    font-size: 10px
+}

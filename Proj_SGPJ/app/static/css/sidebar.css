@@ -1,0 +1,102 @@
+/* Estilos do Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 280px;
+    background-color: #f8f9fa;
+    transition: width 0.3s ease, padding 0.3s ease;
+    z-index: 1000;
+    overflow: hidden; /* Adicionado para esconder conteúdo ao recolher */
+}
+
+.sidebar.collapsed {
+    width: 80px; /* Sidebar recolhido com espaço para ícones e botão */
+    overflow: hidden; /* Esconde o excesso de conteúdo */
+    padding: 0; /* Remove padding quando recolhido */
+    
+}
+
+.sidebar .nav-link {
+    color: #333;
+    padding: 10px 15px; /* Ajusta o padding para manter os ícones centralizados */
+    transition: color 0.3s, background-color 0.3s;
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Previne que o texto se quebre */
+    width: 100%;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+    font-size: 1.5rem; /* Ajusta o tamanho do ícone */
+}
+
+.sidebar .nav-link:hover {
+    background-color: #e9ecef;
+}
+
+/* Esconde o texto dos links quando o sidebar está recolhido */
+.sidebar.collapsed .nav-link .sidebar-text {
+    display: none !important; /* Esconde o texto das opções, mostrando apenas ícones */
+}
+
+/* Botão de Toggle do Sidebar */
+.toggle-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.toggle-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para o conteúdo principal */
+#mainContent {
+    margin-left: 190px; /* Espaço inicial quando o sidebar está expandido */
+    transition: margin-left 0.3s ease;
+    flex-grow: 1;
+    padding: 20px; /* Ajuste do padding conforme necessário */
+}
+
+#mainContent.collapsed {
+    margin-left: 80px; /* Ajusta o conteúdo quando o sidebar está recolhido */
+}
+
+/* Responsividade aprimorada */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    #mainContent {
+        margin-left: 220px;
+    }
+
+    .sidebar.collapsed + #mainContent {
+        margin-left: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 auto;
+        width: auto !important; /* ou o valor desejado */
+        
+    }
+}
+

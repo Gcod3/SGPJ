@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Usuários
+{% endblock %}
+
+{% block content %}
+
+<div class="container my-4">
+    <div class="card mb-4">
+        <div class="card-body"><!-- Linha para entrada de ID do produto e botões -->
+            <div class="cabecalho">
+                <div class="row-input">
+                    <input type="text" class="product-id" placeholder="Digite o codigo do user" required>
+                </div>
+                <div class="titulo">
+                    <h1>Usuários</h1>
+                </div>
+                <div class="row-buttons">
+                    <button id="btn-adicionar-user">Adicionar</button>
+                    <button id="btn-editar-user">Editar</button>
+                    <button id="btn-Excluir-user">Excluir</button>
+                </div>
+            </div>
+            <div class="table table-striped">
+                <!-- Tabela para exibir informações do banco -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>username</th>
+                            <th>password</th>
+                            <th>perfil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if users %}
+                            {% for user in users %}
+                            <tr data-id="{{ user.id }}" data-username="{{ user.username }}" data-perfil="{{ user.perfil }}">
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>*******</td>
+                                <td>{{ user.perfil }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4">Nenhum usuário encontrado.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

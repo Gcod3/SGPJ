@@ -1,0 +1,60 @@
+.filter-row{
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 10px;
+    justify-content: flex-start;
+}
+
+.filter{
+    display: flex !important;
+    align-items: center !important;
+}
+
+.categoria{
+    display: flex !important;
+    align-items: center !important;
+    margin-right: 10px;
+}
+
+#tipobusca{
+    width: 200px !important;
+}
+
+.value{
+    display: flex !important;
+    align-items: center !important;
+    margin-right: 10px;
+}
+
+#filter-input{
+    padding: 5px;
+    width: 275px;
+}
+
+.filter label{
+    margin-right: 10px;
+}
+
+.btn-apply-filter{
+    padding: 5px 7px;
+    background-color: #0d6efd;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.icon{
+    margin-right: 10px;
+    width: 10px;
+}
+
+.form-label {
+    margin-bottom: 0px !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.add-row{
+    margin-right: 10px;
+}

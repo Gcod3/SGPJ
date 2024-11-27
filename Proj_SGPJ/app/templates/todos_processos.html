@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Lista de Processos
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Bloco Único: Tabela de Processos e Paginação -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Processos Jurídicos</h5>
+            <div class="filter-container" id="filter-container">
+                <div class="icon" id="filterIcon">
+                    <i class="bi bi-funnel-fill"></i>
+                </div>
+                <div class="filter-row">
+                    
+                    <div class="filter">
+                        <div class="categoria">
+                            <label for="tipobusca" class="form-label">Tipo filtro</label>
+                            <select class="form-select" id="tipobusca" name="tipobusca" required>
+                                <option value="1">Escolha</option>
+                                <option value="numero">Número do processo</option>
+                                <option value="nome">Nome da parte</option>
+                                <option value="data">Data</option>
+                                <option value="tipoprocesso">Tipo do processo</option>
+                                <option value="responsavel">Responsável</option>
+                                <option value="statusprocesso">Status do processo</option>
+                                <option value="oab">OAB</option>
+                                <option value="cnpj">CNPJ</option>
+                            </select>
+                        </div>
+                        <div class="value">
+                            <label for="filter" class="form-label">Valor</label>
+
+                            <input type="text" class="form-control" id="filter-input" name="filter" required>
+                        </div>
+                    </div>
+                    <div class="apply-filter">
+                        <button class="btn-apply-filter" id="applyFilterButton">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Número do Processo</th>
+                        <th>Tipo do Processo</th>
+                        <th>Adverso</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for processo in processos %}
+                    <tr>
+                        <td>{{ processo.processo.codigo }}</td>
+                        <td>{{ processo.classificacoes[0].nome if processo.classificacoes else 'Desconhecido' }}</td>
+                        <td>{{ processo.partes[1].nome if processo.partes|length > 1 else 'Desconhecido' }}</td>
+                        <td>{{ processo.processo.status }}</td>
+                        <td>
+                            <!-- Dropdown de Ações para cada processo -->
+                            <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Ações
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="/detalhes/{{ processo.processo.codigo }}">Detalhes</a></li>
+                                    <!-- <li><a class="dropdown-item" href="#" onclick="showNotification('Monitoramento do processo: {{ processo.processo.codigo }}')">Monitorar Processo</a></li> -->
+                                    <li><a class="dropdown-item abrirModal" href="#" data-bs-toggle="modal" data-bs-target="#acaoModal" data-processo-id="{{ processo.processo.codigo }}">Movimentar processos</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">Nenhum processo encontrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Paginação -->
+            <div class="pagination" id="pagination">
+                {% if page > 1 %}
+                <a href="{{ url_for('todos_processos', page=page-1) }}">&laquo; Anterior</a>
+                {% endif %}
+
+                {% for i in range(page-4, page+5) %}
+                    {% if i > 0 and i <= total_pages %}
+                        <a href="{{ url_for('todos_processos', page=i) }}" class="{{ 'active' if i == page else '' }}">{{ i }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page < total_pages %}
+                <a href="{{ url_for('todos_processos', page=page+1) }}">Mais &raquo;</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

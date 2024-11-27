@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ControleAcesso.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Modal.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/detalhes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            {% include 'partials/sidebar.html' %}
+            <main class="col" id="mainContent">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Notificações -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notificação</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                <!-- Mensagem será inserida aqui pelo JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <div id="UserEdit" class="modal-user">
+        <div class="modal-content-user">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">Editar Usuário</h2>
+            <form id="form-editar-usuario">
+                <input type="hidden" id="edit-codigo">
+                <div>
+                    <label for="edit-nome">Username:</label>
+                    <input type="text" id="edit-nome" name="edit-nome">
+                </div>
+                <div>
+                    <label for="edit-senha">Password:</label>
+                    <input type="password" id="edit-senha" name="edit-senha">
+                </div>
+                <div id="Perfil-input">
+                    <label for="edit-setor">Perfil:</label>
+                    <input type="text" id="edit-setor" name="edit-setor">
+                </div>
+                <div>
+                    <label for="edit-perfil-select">Perfil:</label>
+                    <select id="edit-perfil-select" name="edit-perfil-select">
+                        <option value="Administrador">Administrador</option>
+                        <option value="Advogado">Advogado</option>
+                        <option value="Assistente">Assistente</option>
+                    </select>
+                </div>
+
+                <button id="btn-salvar">Salvar</button>
+            </form>
+            <div id="confirmation-message" style="display: none;">
+                <p>Tem certeza de que deseja excluir este usuário?</p>
+                <div class="buttonsConfirm">
+                    <button id="btn-confirmar">Confirmar</button>
+                    <button id="btn-cancelar">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Ação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="mb-3">
+                            <label for="tipoInput" class="form-label">Tipo</label>
+                            <input type="text" class="form-control" id="tipoInput">
+                        </div>
+                        <div class="mb-3" id="btnSelect">
+                            <label for="responsavelAcao" class="form-label">Responsavel</label>
+                            <select class="form-select" id="responsavelAcaoModal" name="responsavel" required>
+                                
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dataInput" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="dataInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="comentarioInput" class="form-label">Comentário</label>
+                            <input type="text" class="form-control" id="comentarioInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="statusAcao" class="form-label">Status</label>
+                            <select class="form-select" id="statusAcaoModal" name="status" required>
+                                <option value="Pendente">Pendente</option>
+                                <option value="Andamento">Andamento</option>
+                                <option value="Agendado">Agendado</option>
+                                <option value="Concluído">Concluído</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="anexoAcaoModal" class="form-label">Anexar Documentos</label>
+                            <input type="file" class="form-control" id="anexoAcaoModal" name="anexos" multiple>
+                        </div>
+                        <div class="mb-3">
+                            <label for="anexosLista" class="form-label">Anexos</label>
+                            <ul id="anexosLista" class="list-group">
+                                <!-- Os anexos serão adicionados aqui via JavaScript -->
+                            </ul>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarEdicao()">Salvar</button>
+                    <button type="button" class="btn btn-danger" onclick="excluirLinha()">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="acaoModal" tabindex="-1" aria-labelledby="acaoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="acaoModalLabel">Movimentar Processo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addActionForm">
+                    <!-- Dropdown Dinâmico para Seleção de Usuários -->
+                    <div class="mb-3">
+                        <label for="responsavelAcao" class="form-label">Responsável</label>
+                        <select class="form-select" id="responsavelAcao" name="responsavel">
+                            <option value="">Selecione um responsável</option>
+                            <!-- Populado dinamicamente pelo JavaScript -->
+                        </select>
+                        <button type="button" id="adicionarResponsavel" class="btn btn-secondary mt-2">Adicionar</button>
+                    </div>
+
+                    <!-- Tabela de Usuários Já Atribuídos -->
+                    <div class="mb-3">
+                        <label for="usuariosAtribuidos" class="form-label">Usuários Atribuídos</label>
+                        <table class="table table-bordered" id="usuariosAtribuidos">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dados serão preenchidos dinamicamente pelo JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="buscarCNPJModal" tabindex="-1" aria-labelledby="buscarCNPJModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Cabeçalho do Modal -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="buscarCNPJModalLabel">Buscar Processos por CNPJ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Corpo do Modal -->
+            <div class="modal-body">
+                <form id="buscarCNPJForm">
+                    <!-- Campo para Inserção do CNPJ -->
+                    <div class="mb-3">
+                        <label for="inputCNPJ" class="form-label">CNPJ</label>
+                        <input type="text" class="form-control" id="inputCNPJ" name="cnpj" placeholder="Digite o CNPJ" required>
+                    </div>
+
+                    <!-- Botão para Buscar -->
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-primary" id="buscarCNPJButton">Buscar Processos</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Users.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Alert.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/get_users.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Filter.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Movimentacao_processos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Parametros.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/Editar_Excluir_acao.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ProcessosFiltrados.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define a variável global para a mensagem de notificação
+            var message = "{{ session.get('notification_message') }}";
+            if (message && message !== 'None') {
+                showNotification(message);
+                // Opcional: Limpar a variável global após a exibição
+                
+            }
+        });
+
+        function showNotification(message) {
+            var toastElement = document.getElementById('liveToast');
+            var toastBody = toastElement.querySelector('.toast-body');
+            toastBody.textContent = message;
+            var toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            window.notificationMessage = 'None';
+        }
+    </script>
+
+    
+</body>
+</html>
+

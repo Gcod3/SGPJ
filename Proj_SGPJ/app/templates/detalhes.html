@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Detalhes do Processo
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Bloco 1: Informações Gerais do Processo -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informações do Processo</h5>
+            <p>Processo nº {{ processo['processo']['codigo'] }} - {{ processo['processo']['nome'] }}</p>
+            <ul>
+                <li>Nível de Sigilo: {{ processo['processo']['nivel_sigilo'] }}</li>
+                <li>Tribunal: {{ processo['processo']['tribunal_acronimo'] }}</li>
+                <li>Data de Distribuição: {{ processo['processo']['data_distribuicao'] }}</li>
+                <li>Valor: R$ {{ processo['processo']['valor'] }}</li>
+                <li>Estado: {{ processo['processo']['estado'] }}</li>
+                <li>Fase: {{ processo['processo']['fase'] }}</li>
+                <li>Última Atualização: {{ processo['processo']['ultima_atualizacao'] }}</li>
+                <li>Status: {{ processo['processo']['status'] }}</li>
+                <li>Fase do Processo: {{ processo['processo']['fase_processo'] }}</li>
+                <li>Juiz: {{ processo['processo']['judge'] }}</li>
+                <li>Justiça Gratuita: {{ processo['processo']['free_justice'] }}</li>
+                <li>Situação: {{ processo['processo']['situation'] }}</li>
+                <li>Tribunal: {{ processo['tribunais'][0]['nome'] }}</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bloco 2: Partes e Advogados -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Partes Envolvidas</h5>
+            {% for parte in processo['partes'] %}
+            <div class="mb-3">
+                <h6>{{ parte['nome'] }} ({{ parte['tipo_pessoa'] }} - {{ parte['lado'] }})</h6>
+                <ul>
+                    <li>Documento Principal: {{ parte['documento_principal'] }}</li>
+                    <li>Tipo de Entidade: {{ parte['entity_type'] }}</li>
+                    <li>ID da Entidade: {{ parte['entity_id'] }}</li>
+                    <ul>
+                        {% for advogado in parte['advogados'] %}
+                        <li>Advogado: {{ advogado['nome'] }} (OAB: {{ advogado['document'] }})</li>
+                        {% endfor %}
+                    </ul>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bloco 3: Assuntos, Etapas e Passos -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Assuntos</h5>
+            <h6> </h6>
+            <ul>
+                {% for assunto in processo['assuntos'] %}
+                <li>{{ assunto['nome'] }} (Código: {{ assunto['codigo'] }})</li>
+                {% endfor %}
+            </ul>
+
+            <!-- <h6>Etapas</h6>
+            {% for etapa in processo['etapas'] %}
+            <div class="mb-3">
+                <p>{{ etapa['conteudo'] }} ({{ etapa['data_etapa'] }})</p>
+                <ul>
+                    <li>ID da Etapa: {{ etapa['etapa_id'] }}</li>
+                    <li>Quantidade de Etapas: {{ etapa['quantidade_etapas'] }}</li>
+                    <li>Código do Processo: {{ etapa['lawsuit_cnj'] }}</li>
+                    <li>Instância: {{ etapa['lawsuit_instance'] }}</li>
+                    <li>Privado: {{ etapa['private'] }}</li>
+                </ul>
+            </div>
+            {% endfor %}
+
+            <h6>Passos</h6>
+            {% for passo in processo['passos'] %}
+            <div class="mb-3">
+                <p>{{ passo['nome'] }} ({{ passo['step_date'] }})</p>
+                <ul>
+                    <li>ID do Passo: {{ passo['step_id'] }}</li>
+                    <li>Código do Processo: {{ passo['lawsuit_cnj'] }}</li>
+                    <li>Instância: {{ passo['lawsuit_instance'] }}</li>
+                    <li>Privado: {{ passo['private'] }}</li>
+                </ul> -->
+            <!-- </div>
+            {% endfor %} -->
+        </div>
+    </div>
+
+    <!-- Bloco 4: Exibir Ações -->
+    <div class="card mb-4" id="card-body-acoes">
+        <div class="card-body">
+            <h5 class="card-title">Ações Registradas</h5>
+            <ul id="acoesList">
+                <div class="table table-striped">
+                    <!-- Tabela para exibir informações do banco -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Responsavel</th>
+                                <th>Data</th>
+                                <th>Comentario</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if acoes %}
+                                {% for acao in acoes %}
+                                <tr ondblclick="abrirModal(this)"  data-acao-id="{{ acao.id }}">
+                                    <td>{{ acao.tipo }}</td>
+                                    <td>{{ acao.responsavel.username }}</td>
+                                    <td>{{ acao.data }}</td>
+                                    <td>{{ acao.comentario }}</td>
+                                    <td>{{ acao.status }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">Nenhuma ação encontrado.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bloco 5: Adicionar Ação -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Adicionar Ação</h5>
+            <form id="addActionForm" method="POST" action="{{ url_for('adicionar_acao', codigo_processo=processo['processo']['codigo']) }}" enctype="multipart/form-data">
+        
+                <div class="mb-3">
+                    <label for="tipoAcao" class="form-label">Tipo</label>
+                    <input type="text" class="form-control" id="tipoAcao" name="tipo" required>
+                </div>
+                <div class="mb-3" id="btnSelect">
+                    <label for="responsavelAcao" class="form-label">Responsavel</label>
+                    <select class="form-select" id="responsavelAcao" name="responsavel" required>
+                        
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="dataAcao" class="form-label">Data</label>
+                    <input type="date" class="form-control" id="dataAcao" name="data" required>
+                </div>
+                <div class="mb-3">
+                    <label for="comentarioAcao" class="form-label">Comentário/Anotação</label>
+                    <textarea class="form-control" id="comentarioAcao" name="comentario" rows="3" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="statusAcao" class="form-label">Status</label>
+                    <select class="form-select" id="statusAcao" name="status" required>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Andamento">Andamento</option>
+                        <option value="Agendado">Agendado</option>
+                        <option value="Concluído">Concluído</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="anexoAcao" class="form-label">Anexar Documentos</label>
+                    <input type="file" class="form-control" id="anexoAcao" name="anexos" multiple>
+                </div>
+                <button type="submit" class="btn btn-primary">Adicionar Ação</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

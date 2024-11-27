@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <!-- Adicione aqui o link para o arquivo CSS -->
+    <link rel="stylesheet" href="../static/css/login.css">
+</head>
+<body>
+    <main id="content">
+        <form id="loginForm" class="login">
+            <h2>Login</h2>
+            <div class="box-user">
+                <input type="text" name="email" id="input-username" required>
+                <label>Usuário</label>
+            </div>
+            <div class="box-user">
+                <input type="password" name="senha" id="input-password" required>
+                <label>Senha</label>
+            </div>
+
+            <div class="container-button">
+                <button type="submit"><span class="btn-entrar">
+                    Entrar
+                </span></button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
+
+<script src="../static/js/Login.js"></script>
+
+<script>
+    // Limpa o sessionStorage ao carregar a página de login
+    sessionStorage.removeItem('modalExibido');
+</script>
